@@ -15,6 +15,8 @@ pygame.font.init()
 WINDOW_HEIGHT = 800
 WINDOW_WIDTH = 500
 
+GEN =0
+
 # importing all objects
 BIRD_IMAGES = [pygame.transform.scale2x(pygame.image.load(os.path.join("images","bird1.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("images","bird2.png"))), pygame.transform.scale2x(pygame.image.load(os.path.join("images","bird3.png")))] 
 PIPE_IMAGE = pygame.transform.scale2x(pygame.image.load(os.path.join("images","pipe.png")))
@@ -196,7 +198,7 @@ class Base:
 		window.blit(self.IMG, (self.x1, self.y))
 		window.blit(self.IMG, (self.x2 , self.y))
 
-def draw_window(window, birdObjects, pipes, base, score):
+def draw_window(window, birdObjects, pipes, base, score, generation):
 	# draw the background
 	window.blit(BG_IMAGE, (0,0)) # draw on top left
 	for pipe in pipes:
@@ -206,6 +208,10 @@ def draw_window(window, birdObjects, pipes, base, score):
 	text = STAT_FONT.render("Score: "+ str(score), 1, (255,255,255))
 	window.blit(text, (WINDOW_WIDTH - 10 - text.get_width(), 10))
 
+	# # display gneerations
+	# text = STAT_FONT.render("Gen: "+ str(score), 1, (255,255,255))
+	# window.blit(text, (10, 10))
+
 	base.draw(window)
 	for bird in birdObjects:
 		bird.draw(window)
@@ -213,6 +219,9 @@ def draw_window(window, birdObjects, pipes, base, score):
 	pygame.display.update()
 
 def main(genomes, config):
+	global GEN
+	GEN += 1
+
 	birdObjects = [] # upadte this to deal with multiple birds
 	neural_nets = [] # neeural network for each bird
 	genome_list = [] # genome list to maintain fitness info for each bird
@@ -307,7 +316,7 @@ def main(genomes, config):
 				genome_list.pop(x)
 
 		base.move()
-		draw_window(window, birdObjects, pipes, base, score)
+		draw_window(window, birdObjects, pipes, base, score, GEN)
 
 	# pygame.quit()
 	# quit()
